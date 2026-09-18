@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # Local working docs (not tracked)
-docs/
+local-docs/
