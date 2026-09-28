@@ -1,0 +1,21 @@
+{
+  "budget_mode": "subscription",
+  "commands_confirmed": true,
+  "gate_output_bytes": 65536,
+  "gate_timeout_seconds": 600,
+  "inactivity_timeout_seconds": 600,
+  "lint": "cd src-tauri && cargo fmt --check && cargo clippy --all-targets -- -D warnings",
+  "max_fix_rounds": 2,
+  "plugin_required": false,
+  "plugin_scope": "project",
+  "sandbox": "bubblewrap-v1",
+  "sandbox_read_only_paths": [
+    "~/.cargo/registry"
+  ],
+  "schema_version": 1,
+  "termination_grace_seconds": 5,
+  "test": "cd src-tauri && cargo test",
+  "typecheck": "npm run build",
+  "worker_output_bytes": 65536,
+  "worker_provider": "claude"
+}
