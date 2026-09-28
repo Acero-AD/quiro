@@ -6,7 +6,7 @@
   "inactivity_timeout_seconds": 600,
   "lint": "cd src-tauri && cargo fmt --check && cargo clippy --all-targets -- -D warnings",
   "max_fix_rounds": 2,
-  "plugin_required": false,
+  "plugin_required": true,
   "plugin_scope": "project",
   "sandbox": "bubblewrap-v1",
   "sandbox_read_only_paths": [
