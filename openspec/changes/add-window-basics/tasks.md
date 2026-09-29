@@ -14,8 +14,8 @@
 
 ## 3. Wire window state into the app
 
-- [ ] 3.1 `src-tauri/tauri.conf.json` gives the window `label: "main"`, title "Quiro", `width` 1000, `height` 700, `minWidth` 480, `minHeight` 320 and `visible: false`, with no `center` key
-- [ ] 3.2 In `setup`, `lib.rs` resolves `app_local_data_dir()/window-state.json`, loads it, builds the monitor work areas and `can_position` (not Wayland), then applies the plan in the order: size, placement, show, maximize
-- [ ] 3.3 The window is shown even when resolving the path, loading, or applying the plan fails (reviewer can see a code path that always calls `show()`)
-- [ ] 3.4 `lib.rs` records the last normal size and position from `Resized` and `Moved` events while the window is neither maximized nor minimized, and on `CloseRequested` saves that size, the current maximized flag, and the position only when `can_position`
-- [ ] 3.5 No crate or npm dependency is added by this section, and `tauri-plugin-window-state` is not used
+- [x] 3.1 `src-tauri/tauri.conf.json` gives the window `label: "main"`, title "Quiro", `width` 1000, `height` 700, `minWidth` 480, `minHeight` 320 and `visible: false`, with no `center` key
+- [x] 3.2 In `setup`, `lib.rs` resolves `app_local_data_dir()/window-state.json`, loads it, builds the monitor work areas and `can_position` (not Wayland), then applies the plan in the order: size, placement, show, maximize
+- [x] 3.3 The window is shown even when resolving the path, loading, or applying the plan fails (reviewer can see a code path that always calls `show()`)
+- [x] 3.4 `lib.rs` records the last normal size and position from `Resized` and `Moved` events while the window is neither maximized nor minimized, and on `CloseRequested` saves that size, the current maximized flag, and the position only when `can_position`
+- [x] 3.5 No crate or npm dependency is added by this section, and `tauri-plugin-window-state` is not used
