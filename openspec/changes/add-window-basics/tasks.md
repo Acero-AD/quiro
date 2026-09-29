@@ -1,10 +1,10 @@
 ## 1. Window state record and file
 
-- [ ] 1.1 `src-tauri/src/window_state.rs` defines the window state record (logical `width` and `height`, `maximized`, optional physical `x`/`y`), with constants for the 1000×700 first-run size and the 480×320 minimum, and is declared as a module in `lib.rs`
-- [ ] 1.2 The record serialises to the JSON format in `design.md` with `"schema": 1`, and leaves out `x`/`y` when there is no position
-- [ ] 1.3 `load(path)` returns no state for a missing file, unreadable file, malformed JSON, or an unknown `schema`, without panicking
-- [ ] 1.4 `save(path, state)` creates the parent directory if needed and writes through a temporary file in the same directory that is then renamed
-- [ ] 1.5 `cargo test` covers a save-then-load round trip, a missing file, malformed JSON and an unknown `schema` value, using files under `std::env::temp_dir()`
+- [x] 1.1 `src-tauri/src/window_state.rs` defines the window state record (logical `width` and `height`, `maximized`, optional physical `x`/`y`), with constants for the 1000×700 first-run size and the 480×320 minimum, and is declared as a module in `lib.rs`
+- [x] 1.2 The record serialises to the JSON format in `design.md` with `"schema": 1`, and leaves out `x`/`y` when there is no position
+- [x] 1.3 `load(path)` returns no state for a missing file, unreadable file, malformed JSON, or an unknown `schema`, without panicking
+- [x] 1.4 `save(path, state)` creates the parent directory if needed and writes through a temporary file in the same directory that is then renamed
+- [x] 1.5 `cargo test` covers a save-then-load round trip, a missing file, malformed JSON and an unknown `schema` value, using files under `std::env::temp_dir()`
 
 ## 2. Restore planning
 
