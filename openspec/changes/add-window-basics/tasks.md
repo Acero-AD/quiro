@@ -8,9 +8,9 @@
 
 ## 2. Restore planning
 
-- [ ] 2.1 `is_wayland(wayland_display, gdk_backend)` implements the rule in `design.md`, and `cargo test` covers: `WAYLAND_DISPLAY` unset or empty; `GDK_BACKEND` unset, `wayland`, `x11`, `wayland,x11,*`, `x11,wayland` and `*`
-- [ ] 2.2 `plan_restore(saved, monitors, can_position)` returns the logical size, the placement (`Center`, `At(x, y)` or `Leave`) and the maximize flag, following the four restore rules in `design.md`
-- [ ] 2.3 `cargo test` covers first run with and without `can_position`, a size below the minimum being raised, a size larger than the work area being clamped (including a monitor with scale factor 2), a saved position off every monitor falling back to `Center`, a partly off-screen position being shifted inside the work area, `can_position = false` never giving `At` or `Center`, the maximized flag being carried over, and an empty monitor list
+- [x] 2.1 `is_wayland(wayland_display, gdk_backend)` implements the rule in `design.md`, and `cargo test` covers: `WAYLAND_DISPLAY` unset or empty; `GDK_BACKEND` unset, `wayland`, `x11`, `wayland,x11,*`, `x11,wayland` and `*`
+- [x] 2.2 `plan_restore(saved, monitors, can_position)` returns the logical size, the placement (`Center`, `At(x, y)` or `Leave`) and the maximize flag, following the four restore rules in `design.md`
+- [x] 2.3 `cargo test` covers first run with and without `can_position`, a size below the minimum being raised, a size larger than the work area being clamped (including a monitor with scale factor 2), a saved position off every monitor falling back to `Center`, a partly off-screen position being shifted inside the work area, `can_position = false` never giving `At` or `Center`, the maximized flag being carried over, and an empty monitor list
 
 ## 3. Wire window state into the app
 
