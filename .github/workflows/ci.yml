@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check-and-build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            executable: src-tauri/target/release/quiro
+          - os: windows-2025
+            executable: src-tauri/target/release/quiro.exe
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Linux system packages
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev librsvg2-dev libxdo-dev
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: npm
+
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+        with:
+          workspaces: './src-tauri -> target'
+          save-if: ${{ github.ref == 'refs/heads/master' }}
+
+      - run: npm ci
+
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+
+      - run: cargo fmt --check
+        working-directory: src-tauri
+      - run: cargo clippy --all-targets -- -D warnings
+        working-directory: src-tauri
+      - run: cargo test
+        working-directory: src-tauri
+
+      - run: npm run tauri build -- --no-bundle
+
+      - uses: actions/upload-artifact@v7
+        with:
+          path: ${{ matrix.executable }}
+          archive: false
+          retention-days: 30
+          if-no-files-found: error
