@@ -29,6 +29,3 @@ local-docs/
 # Machine-local agent settings (permissions differ per PC)
 .claude/settings.local.json
 .harness/*
-!.harness/config.json
-!.harness/managed-settings.json
-!.harness/provider-policy.json
