@@ -271,14 +271,17 @@ mod tests {
         assert!(!is_wayland(Some(""), None));
     }
 
+    // Wayland only exists on Linux, so elsewhere `is_wayland` is always false.
+    const ON_LINUX: bool = cfg!(target_os = "linux");
+
     #[test]
     fn is_wayland_true_when_backend_unset() {
-        assert!(is_wayland(Some("wayland-0"), None));
+        assert_eq!(is_wayland(Some("wayland-0"), None), ON_LINUX);
     }
 
     #[test]
     fn is_wayland_true_for_wayland_backend() {
-        assert!(is_wayland(Some("wayland-0"), Some("wayland")));
+        assert_eq!(is_wayland(Some("wayland-0"), Some("wayland")), ON_LINUX);
     }
 
     #[test]
@@ -288,7 +291,10 @@ mod tests {
 
     #[test]
     fn is_wayland_true_when_wayland_first() {
-        assert!(is_wayland(Some("wayland-0"), Some("wayland,x11,*")));
+        assert_eq!(
+            is_wayland(Some("wayland-0"), Some("wayland,x11,*")),
+            ON_LINUX
+        );
     }
 
     #[test]
@@ -298,7 +304,7 @@ mod tests {
 
     #[test]
     fn is_wayland_true_for_wildcard() {
-        assert!(is_wayland(Some("wayland-0"), Some("*")));
+        assert_eq!(is_wayland(Some("wayland-0"), Some("*")), ON_LINUX);
     }
 
     fn monitor(x: i32, y: i32, width: u32, height: u32, scale_factor: f64) -> MonitorInfo {
