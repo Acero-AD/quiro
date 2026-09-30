@@ -31,3 +31,4 @@ local-docs/
 .harness/*
 !.harness/config.json
 !.harness/managed-settings.json
+!.harness/provider-policy.json
