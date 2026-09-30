@@ -1,3 +1,4 @@
+mod ipc;
 mod window_state;
 
 use std::path::PathBuf;
@@ -12,12 +13,6 @@ struct WindowStateTracker {
     normal_width: f64,
     normal_height: f64,
     normal_position: Option<(i32, i32)>,
-}
-
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
 fn monitor_work_area(monitor: &tauri::Monitor) -> MonitorInfo {
@@ -35,7 +30,7 @@ fn monitor_work_area(monitor: &tauri::Monitor) -> MonitorInfo {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(ipc::builder().invoke_handler())
         .setup(|app| {
             let window = app
                 .get_webview_window("main")
