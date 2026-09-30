@@ -1,0 +1,34 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
+  "files": {
+    "includes": [
+      "src/**",
+      "!src/bindings.ts",
+      "vite.config.ts",
+      "vitest.config.ts",
+      "tsconfig.json",
+      "biome.json",
+      "src-tauri/tauri.conf.json",
+      "src-tauri/capabilities/**"
+    ]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "linter": {
+    "rules": {
+      "preset": "recommended",
+      "style": {
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "@tauri-apps/api/core": "Call Rust through the generated src/bindings.ts instead."
+            }
+          }
+        }
+      }
+    }
+  }
+}
