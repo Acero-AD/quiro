@@ -95,6 +95,13 @@ Without bundles or releases, `tauri-action` would only run `tauri build`, so pla
 ## Open Questions
 
 - The cold release-build time on each runner, answered by the first run.
+  - *Answered.* First green run on both OSes: [run 36765793604](https://github.com/Acero-AD/quiro/actions/runs/36765793604), commit `98ee867`, with both executables uploaded (`quiro` 6.0 MB, `quiro.exe` 4.3 MB).
+  - `windows-2025`, cold (no cache found): job 12m 23s, of which the release build took 5m 54s.
+  - `ubuntu-24.04`, warm (cache from the first run): job 3m 03s, of which the release build took 1m 31s. Its cold run ([run 36701677943](https://github.com/Acero-AD/quiro/actions/runs/36701677943)) took 6m 36s, with a 3m 14s release build.
+  - The first two runs failed on Windows only, both in `cargo test`:
+    - The test binary couldn't start (`STATUS_ENTRYPOINT_NOT_FOUND`), because `tauri-build` embeds the Common Controls v6 manifest only in the app binary. `src-tauri/build.rs` now has the MSVC linker embed `src-tauri/windows-app-manifest.xml` in every binary. That includes `quiro.exe`, so the manual Windows check should confirm that the app still launches.
+    - Four `is_wayland` tests expected `true` on every OS, but the function is false off Linux by design. They now expect `true` only on Linux.
 - Whether both OSes' debug and release caches fit in 10 GB.
+  - *Partly answered.* After the green run, the caches total 2.1 GB: Rust 1.19 GB on Linux and 0.86 GB on Windows, npm about 50 MB per OS. Watch this as dependencies grow.
 - Whether artifact and cache storage count against the Free plan's quotas for a public repository. GitHub's billing docs don't say.
 - Whether the WebView2 Runtime is on `windows-2025`. It only matters if a CI launch test is ever added.
