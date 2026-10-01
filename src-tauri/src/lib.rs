@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use std::sync::Mutex;
 
 use tauri::{Manager, WindowEvent};
-use window_state::{MonitorInfo, Placement, WindowState};
+use window_state::{MonitorInfo, Placement};
 
 struct WindowStateTracker {
     path: PathBuf,
@@ -90,42 +90,42 @@ pub fn run() {
 
                 match event {
                     WindowEvent::Resized(size) => {
-                        let is_normal = !tracked_window.is_maximized().unwrap_or(false)
-                            && !tracked_window.is_minimized().unwrap_or(false);
-                        if is_normal {
+                        let maximized = tracked_window.is_maximized().unwrap_or(false);
+                        let minimized = tracked_window.is_minimized().unwrap_or(false);
+                        let mut tracker = tracker.lock().unwrap();
+                        if window_state::tracks_normal_geometry(
+                            maximized,
+                            minimized,
+                            tracker.can_position,
+                        ) {
                             let scale = tracked_window.scale_factor().unwrap_or(1.0);
                             let logical = size.to_logical::<f64>(scale);
-                            let mut tracker = tracker.lock().unwrap();
                             tracker.normal_width = logical.width;
                             tracker.normal_height = logical.height;
                         }
                     }
                     WindowEvent::Moved(position) => {
-                        let is_normal = !tracked_window.is_maximized().unwrap_or(false)
-                            && !tracked_window.is_minimized().unwrap_or(false);
-                        if is_normal {
-                            let mut tracker = tracker.lock().unwrap();
+                        let maximized = tracked_window.is_maximized().unwrap_or(false);
+                        let minimized = tracked_window.is_minimized().unwrap_or(false);
+                        let mut tracker = tracker.lock().unwrap();
+                        if window_state::tracks_normal_geometry(
+                            maximized,
+                            minimized,
+                            tracker.can_position,
+                        ) {
                             tracker.normal_position = Some((position.x, position.y));
                         }
                     }
                     WindowEvent::CloseRequested { .. } => {
                         let tracker = tracker.lock().unwrap();
                         let maximized = tracked_window.is_maximized().unwrap_or(false);
-                        let (x, y) = if tracker.can_position {
-                            match tracker.normal_position {
-                                Some((x, y)) => (Some(x), Some(y)),
-                                None => (None, None),
-                            }
-                        } else {
-                            (None, None)
-                        };
-                        let new_state = WindowState {
-                            width: tracker.normal_width,
-                            height: tracker.normal_height,
+                        let new_state = window_state::closing_state(
+                            tracker.normal_width,
+                            tracker.normal_height,
+                            tracker.normal_position,
                             maximized,
-                            x,
-                            y,
-                        };
+                            tracker.can_position,
+                        );
                         let _ = window_state::save(&tracker.path, &new_state);
                     }
                     _ => {}

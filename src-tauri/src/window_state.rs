@@ -128,6 +128,9 @@ pub struct RestorePlan {
     pub maximized: bool,
 }
 
+/// `can_position` means the app may place its own window: both its position
+/// and its maximized state. It is false on Wayland, where the compositor owns
+/// both, so the plan then never positions or maximizes the window.
 pub fn plan_restore(
     saved: Option<&WindowState>,
     monitors: &[MonitorInfo],
@@ -174,7 +177,35 @@ pub fn plan_restore(
         width,
         height,
         placement,
-        maximized,
+        maximized: can_position && maximized,
+    }
+}
+
+/// Whether a resize or move event updates the remembered normal geometry.
+/// Without `can_position` (Wayland) the reported maximized state is ignored.
+pub fn tracks_normal_geometry(maximized: bool, minimized: bool, can_position: bool) -> bool {
+    !minimized && (!can_position || !maximized)
+}
+
+/// The state saved when the window closes. Without `can_position` (Wayland)
+/// it holds no position and `maximized: false`.
+pub fn closing_state(
+    normal_width: f64,
+    normal_height: f64,
+    normal_position: Option<(i32, i32)>,
+    maximized: bool,
+    can_position: bool,
+) -> WindowState {
+    let (x, y) = match normal_position {
+        Some((x, y)) if can_position => (Some(x), Some(y)),
+        _ => (None, None),
+    };
+    WindowState {
+        width: normal_width,
+        height: normal_height,
+        maximized: can_position && maximized,
+        x,
+        y,
     }
 }
 
@@ -464,5 +495,83 @@ mod tests {
         assert_eq!(plan.width, 5000.0);
         assert_eq!(plan.height, 4000.0);
         assert_eq!(plan.placement, Placement::Center);
+    }
+
+    #[test]
+    fn plan_restore_maximized_only_when_can_position() {
+        let saved = WindowState {
+            width: 1000.0,
+            height: 700.0,
+            maximized: true,
+            x: Some(100),
+            y: Some(100),
+        };
+        let monitors = [monitor(0, 0, 1920, 1080, 1.0)];
+        assert!(!plan_restore(Some(&saved), &monitors, false).maximized);
+        assert!(plan_restore(Some(&saved), &monitors, true).maximized);
+    }
+
+    #[test]
+    fn tracks_normal_geometry_all_combinations() {
+        // (maximized, minimized, can_position) -> expected
+        let cases = [
+            (false, false, false, true),
+            (false, false, true, true),
+            (false, true, false, false),
+            (false, true, true, false),
+            (true, false, false, true),
+            (true, false, true, false),
+            (true, true, false, false),
+            (true, true, true, false),
+        ];
+        for (maximized, minimized, can_position, expected) in cases {
+            assert_eq!(
+                tracks_normal_geometry(maximized, minimized, can_position),
+                expected,
+                "maximized={maximized} minimized={minimized} can_position={can_position}"
+            );
+        }
+    }
+
+    #[test]
+    fn closing_state_without_can_position_drops_maximized_and_position() {
+        let state = closing_state(1200.0, 800.0, Some((120, 80)), true, false);
+        assert_eq!(
+            state,
+            WindowState {
+                width: 1200.0,
+                height: 800.0,
+                maximized: false,
+                x: None,
+                y: None,
+            }
+        );
+    }
+
+    #[test]
+    fn closing_state_with_can_position_keeps_maximized_and_position() {
+        let state = closing_state(1200.0, 800.0, Some((120, 80)), true, true);
+        assert_eq!(
+            state,
+            WindowState {
+                width: 1200.0,
+                height: 800.0,
+                maximized: true,
+                x: Some(120),
+                y: Some(80),
+            }
+        );
+
+        let no_pos = closing_state(1200.0, 800.0, None, false, true);
+        assert_eq!(
+            no_pos,
+            WindowState {
+                width: 1200.0,
+                height: 800.0,
+                maximized: false,
+                x: None,
+                y: None,
+            }
+        );
     }
 }
