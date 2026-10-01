@@ -1,4 +1,9 @@
-import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
+import {
+  defaultKeymap,
+  history,
+  historyKeymap,
+  redo,
+} from "@codemirror/commands";
 import type { Extension } from "@codemirror/state";
 import {
   drawSelection,
@@ -23,7 +28,12 @@ export function editorExtensions(): Extension[] {
     highlightSpecialChars(),
     history(),
     drawSelection(),
-    keymap.of([...editingKeymap, ...historyKeymap]),
+    keymap.of([
+      ...editingKeymap,
+      ...historyKeymap,
+      // CodeMirror binds Ctrl+Shift+Z to redo on Linux only.
+      { win: "Ctrl-Shift-z", run: redo, preventDefault: true },
+    ]),
     layoutTheme,
   ];
 }

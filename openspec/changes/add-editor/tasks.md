@@ -19,11 +19,11 @@
 
 ## 2. Keymap and undo history
 
-- [ ] 2.1 The editor's keymap includes `{ win: "Ctrl-Shift-z", run: redo, preventDefault: true }` after `historyKeymap`.
-- [ ] 2.2 A keymap test file for Linux stubs `navigator.platform` as `"Linux x86_64"` before loading the editor with a dynamic `import()`. It checks that Ctrl+Z undoes an edit, and that Ctrl+Shift+Z and Ctrl+Y each redo it, by sending `keydown` events to the content element.
-- [ ] 2.3 A separate keymap test file for Windows stubs `navigator.platform` as `"Win32"` the same way and makes the same three checks.
-- [ ] 2.4 In both keymap test files, a `keydown` for each of Ctrl+N, Ctrl+O, Ctrl+S, Ctrl+Shift+S, Ctrl+, (comma), Ctrl+Shift+P and Ctrl+/ isn't `defaultPrevented` and leaves the document unchanged.
-- [ ] 2.5 A history test dispatches 100 adjacent `input.type` edits, each with a `Transaction.time` 600 ms after the last. Undoing 100 times restores each earlier text in turn and ends at the starting text.
-- [ ] 2.6 A history test dispatches five adjacent `input.type` edits 100 ms apart. One undo removes all five, and a further edit 600 ms later undoes separately.
-- [ ] 2.7 A history test dispatches a typed edit, then, 600 ms later, an `input.type.compose.start` edit followed by `input.type.compose` edits spread over several seconds. One undo removes the whole composed sequence and leaves the typed edit.
-- [ ] 2.8 No test file from section 1 is deleted or loses assertions, and `npm run lint`, `npm test` and `npm run build` pass in the gate.
+- [x] 2.1 The editor's keymap includes `{ win: "Ctrl-Shift-z", run: redo, preventDefault: true }` after `historyKeymap`.
+- [x] 2.2 A keymap test file for Linux stubs `navigator.platform` as `"Linux x86_64"` before loading the editor with a dynamic `import()`. It checks that Ctrl+Z undoes an edit, and that Ctrl+Shift+Z and Ctrl+Y each redo it, by sending `keydown` events to the content element.
+- [x] 2.3 A separate keymap test file for Windows stubs `navigator.platform` as `"Win32"` the same way and makes the same three checks.
+- [x] 2.4 In both keymap test files, a `keydown` for each of Ctrl+N, Ctrl+O, Ctrl+S, Ctrl+Shift+S, Ctrl+, (comma), Ctrl+Shift+P and Ctrl+/ isn't `defaultPrevented` and leaves the document unchanged.
+- [x] 2.5 A history test dispatches 100 adjacent `input.type` edits, each with a `Transaction.time` 600 ms after the last. Undoing 100 times restores each earlier text in turn and ends at the starting text.
+- [x] 2.6 A history test dispatches five adjacent `input.type` edits 100 ms apart. One undo removes all five, and a further edit 600 ms later undoes separately.
+- [x] 2.7 A history test dispatches a typed edit, then, 600 ms later, an `input.type.compose.start` edit followed by `input.type.compose` edits spread over several seconds. One undo removes the whole composed sequence and leaves the typed edit.
+- [x] 2.8 No test file from section 1 is deleted or loses assertions, and `npm run lint`, `npm test` and `npm run build` pass in the gate.
