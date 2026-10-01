@@ -45,8 +45,12 @@ One row of text as it appears on screen. A line longer than the editor's width w
 _Avoid_: display line, wrapped line, screen line, line (when meaning a visual line)
 
 **Undo step**:
-The unit of editing that one undo reverses: a burst of edits made in quick succession, or one composed character sequence.
+The unit of editing that one undo reverses: a burst of edits made in quick succession, or one **composed input** sequence.
 _Avoid_: history entry, change, edit (when meaning the undo unit)
+
+**Composed input**:
+Characters typed in several keystrokes and inserted as one sequence: an accent from a dead key, a compose sequence, or a word from an input method.
+_Avoid_: IME input (when meaning all three), composition, dead-key input
 
 ### App
 
