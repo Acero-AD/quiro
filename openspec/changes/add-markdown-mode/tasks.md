@@ -1,13 +1,13 @@
 ## 1. Dialect and the pinned parse tree
 
-- [ ] 1.1 An internal file in `src/editor/` builds the language as `yamlFrontmatter({ content: markdown({ base: commonmarkLanguage, extensions: [GFM, …], addKeymap: false, completeHTMLTags: false, pasteURLAsLink: false }) })`, with no `codeLanguages`, and `src/editor/index.ts` adds it to the editor's extensions. `createEditor`'s signature and the exported `Editor` type are unchanged.
-- [ ] 1.2 `src/editor/fixtures/dialect.md` exists, under 3,000 characters with LF line endings and no raw HTML, using: front matter, ATX headings of levels 1 to 6, emphasis, strong, two-tilde strikethrough, inline code, a fenced code block, a link with a URL, an autolink, a bullet list, an ordered list, a task list with a checked and an unchecked item, a blockquote and a table.
-- [ ] 1.3 A tree test fully parses the fixture with the editor's language, walks the tree with `tree.iterate`, writes one `Name from-to` line per node, and compares the result with `src/editor/fixtures/dialect.tree.txt`. It doesn't use `Tree.toString()`.
-- [ ] 1.4 When the listing differs, the tree test fails with a message that contains the complete actual listing between begin and end markers, and names `src/editor/fixtures/dialect.tree.txt` as the file to write.
-- [ ] 1.5 `src/editor/fixtures/dialect.tree.txt` contains a `Frontmatter` node, `Strikethrough`, `Table`, `Task` and `TaskMarker` nodes, `ATXHeading1` to `ATXHeading6`, and no `Subscript`, `Superscript` or `Emoji` node.
-- [ ] 1.6 Dialect tests check that `~x~` yields no `Subscript` or `Strikethrough` node, `:smile:` yields no `Emoji` node, `~~gone~~` yields a `Strikethrough` node, and a leading `---`/`title: Notes`/`---` block yields `Frontmatter` rather than `HorizontalRule`.
-- [ ] 1.7 Editing tests check that Enter at the end of `- item` produces a new line that doesn't start with `- `, and that pasting `https://example.com` over a selected `word` replaces it with exactly `https://example.com`.
-- [ ] 1.8 `add-editor`'s test files are unchanged, and `npm run lint`, `npm test` and `npm run build` pass in the gate.
+- [x] 1.1 An internal file in `src/editor/` builds the language as `yamlFrontmatter({ content: markdown({ base: commonmarkLanguage, extensions: [GFM, …], addKeymap: false, completeHTMLTags: false, pasteURLAsLink: false }) })`, with no `codeLanguages`, and `src/editor/index.ts` adds it to the editor's extensions. `createEditor`'s signature and the exported `Editor` type are unchanged.
+- [x] 1.2 `src/editor/fixtures/dialect.md` exists, under 3,000 characters with LF line endings and no raw HTML, using: front matter, ATX headings of levels 1 to 6, emphasis, strong, two-tilde strikethrough, inline code, a fenced code block, a link with a URL, an autolink, a bullet list, an ordered list, a task list with a checked and an unchecked item, a blockquote and a table.
+- [x] 1.3 A tree test fully parses the fixture with the editor's language, walks the tree with `tree.iterate`, writes one `Name from-to` line per node, and compares the result with `src/editor/fixtures/dialect.tree.txt`. It doesn't use `Tree.toString()`.
+- [x] 1.4 When the listing differs, the tree test fails with a message that contains the complete actual listing between begin and end markers, and names `src/editor/fixtures/dialect.tree.txt` as the file to write.
+- [x] 1.5 `src/editor/fixtures/dialect.tree.txt` contains a `Frontmatter` node, `Strikethrough`, `Table`, `Task` and `TaskMarker` nodes, `ATXHeading1` to `ATXHeading6`, and no `Subscript`, `Superscript` or `Emoji` node.
+- [x] 1.6 Dialect tests check that `~x~` yields no `Subscript` or `Strikethrough` node, `:smile:` yields no `Emoji` node, `~~gone~~` yields a `Strikethrough` node, and a leading `---`/`title: Notes`/`---` block yields `Frontmatter` rather than `HorizontalRule`.
+- [x] 1.7 Editing tests check that Enter at the end of `- item` produces a new line that doesn't start with `- `, and that pasting `https://example.com` over a selected `word` replaces it with exactly `https://example.com`.
+- [x] 1.8 `add-editor`'s test files are unchanged, and `npm run lint`, `npm test` and `npm run build` pass in the gate.
 
 ## 2. Semantic classes and styles
 
