@@ -18,4 +18,4 @@
 ## 3. First run and baseline
 
 - [x] 3.1 A push to `master` produces a green run on both OSes with both executables uploaded, and its URL and each job's duration are recorded under Open Questions in `design.md`
-- [ ] 3.2 The harness baseline is taken again after `ci.yml` is committed, and `harness doctor` reports READY
+- [x] 3.2 The harness baseline is taken again after `ci.yml` is committed, and `harness doctor` reports READY
