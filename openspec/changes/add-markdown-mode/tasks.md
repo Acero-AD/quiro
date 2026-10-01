@@ -1,0 +1,21 @@
+## 1. Dialect and the pinned parse tree
+
+- [ ] 1.1 An internal file in `src/editor/` builds the language as `yamlFrontmatter({ content: markdown({ base: commonmarkLanguage, extensions: [GFM, …], addKeymap: false, completeHTMLTags: false, pasteURLAsLink: false }) })`, with no `codeLanguages`, and `src/editor/index.ts` adds it to the editor's extensions. `createEditor`'s signature and the exported `Editor` type are unchanged.
+- [ ] 1.2 `src/editor/fixtures/dialect.md` exists, under 3,000 characters with LF line endings and no raw HTML, using: front matter, ATX headings of levels 1 to 6, emphasis, strong, two-tilde strikethrough, inline code, a fenced code block, a link with a URL, an autolink, a bullet list, an ordered list, a task list with a checked and an unchecked item, a blockquote and a table.
+- [ ] 1.3 A tree test fully parses the fixture with the editor's language, walks the tree with `tree.iterate`, writes one `Name from-to` line per node, and compares the result with `src/editor/fixtures/dialect.tree.txt`. It doesn't use `Tree.toString()`.
+- [ ] 1.4 When the listing differs, the tree test fails with a message that contains the complete actual listing between begin and end markers, and names `src/editor/fixtures/dialect.tree.txt` as the file to write.
+- [ ] 1.5 `src/editor/fixtures/dialect.tree.txt` contains a `Frontmatter` node, `Strikethrough`, `Table`, `Task` and `TaskMarker` nodes, `ATXHeading1` to `ATXHeading6`, and no `Subscript`, `Superscript` or `Emoji` node.
+- [ ] 1.6 Dialect tests check that `~x~` yields no `Subscript` or `Strikethrough` node, `:smile:` yields no `Emoji` node, `~~gone~~` yields a `Strikethrough` node, and a leading `---`/`title: Notes`/`---` block yields `Frontmatter` rather than `HorizontalRule`.
+- [ ] 1.7 Editing tests check that Enter at the end of `- item` produces a new line that doesn't start with `- `, and that pasting `https://example.com` over a selected `word` replaces it with exactly `https://example.com`.
+- [ ] 1.8 `add-editor`'s test files are unchanged, and `npm run lint`, `npm test` and `npm run build` pass in the gate.
+
+## 2. Semantic classes and styles
+
+- [ ] 2.1 A `tagHighlighter`, installed with `syntaxHighlighting`, together with Quiro-defined tags attached through `styleTags` in a `MarkdownConfig`'s `props`, gives the classes in the design's table to headings (per level), emphasis, strong, strikethrough, inline code, link text, URLs, list markers, blockquotes, tables, task markers and syntax markers.
+- [ ] 2.2 A view plugin adds `Decoration.line` classes from the syntax tree over the visible ranges: `md-code-block` on every line of a fenced code block, and `md-front-matter` on every line of the front matter.
+- [ ] 2.3 The Markdown styles are one `EditorView.theme` spec, exported inside `src/editor/`. It declares each `--md-…` custom property's default on the editor root, uses only `var(--md-…)` values for `color` and `background-color`, and uses only these properties: `color`, `background-color`, `font-weight`, `font-style`, `text-decoration`, `font-family`, and `padding-left`/`padding-right` for inline code.
+- [ ] 2.4 No rule in the Markdown theme sets `font-size`, `line-height`, `vertical-align`, `padding`, `padding-top`, `padding-bottom`, `margin` or `border`. Headings are bold and coloured at body size.
+- [ ] 2.5 The `md-list-marker` and `md-task-marker` rules, and the rule for a quote's marker, come after the `md-syntax-marker` rule in the theme, so their colours win.
+- [ ] 2.6 A jsdom class test loads one short snippet per construct with `createEditor` and `load`, forces parsing, and checks that each of `md-heading-1` to `md-heading-6`, `md-emphasis`, `md-strong`, `md-strikethrough`, `md-code`, `md-code-block`, `md-link`, `md-url`, `md-list-marker`, `md-quote`, `md-table`, `md-task-marker`, `md-front-matter` and `md-syntax-marker` appears on the expected text, and that `## Section` carries `md-heading-2` but not `md-heading-1`.
+- [ ] 2.7 A style test reads the exported theme spec and checks that every `color` and `background-color` value starts with `var(--md-`, and that no heading rule sets `font-size`.
+- [ ] 2.8 Test files from section 1 and from `add-editor` are unchanged, and `npm run lint`, `npm test` and `npm run build` pass in the gate.
