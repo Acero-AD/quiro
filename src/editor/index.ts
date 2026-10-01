@@ -1,7 +1,10 @@
 import { EditorState } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
+import { blockLines } from "./blocks";
 import { editorExtensions } from "./extensions";
+import { markdownHighlighting } from "./highlighting";
 import { markdownMode } from "./language";
+import { markdownTheme } from "./theme";
 
 export interface Editor {
   load(fileText: string): void;
@@ -13,7 +16,13 @@ export interface Editor {
 function newState(doc: string): EditorState {
   return EditorState.create({
     doc,
-    extensions: [editorExtensions(), markdownMode()],
+    extensions: [
+      editorExtensions(),
+      markdownMode(),
+      markdownHighlighting(),
+      blockLines,
+      markdownTheme,
+    ],
   });
 }
 

@@ -2,6 +2,7 @@ import { commonmarkLanguage, markdown } from "@codemirror/lang-markdown";
 import { yamlFrontmatter } from "@codemirror/lang-yaml";
 import type { LanguageSupport } from "@codemirror/language";
 import { GFM } from "@lezer/markdown";
+import { quiroMarkdownTags } from "./highlighting";
 
 // CommonMark plus exactly the GitHub extensions, not markdownLanguage, which
 // also brings subscript, superscript and emoji. No codeLanguages: fenced code
@@ -13,7 +14,7 @@ export function markdownMode(): LanguageSupport {
   return yamlFrontmatter({
     content: markdown({
       base: commonmarkLanguage,
-      extensions: [GFM],
+      extensions: [GFM, quiroMarkdownTags],
       addKeymap: false,
       completeHTMLTags: false,
       pasteURLAsLink: false,
