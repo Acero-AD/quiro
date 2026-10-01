@@ -25,10 +25,36 @@
           "options": {
             "paths": {
               "@tauri-apps/api/core": "Call Rust through the generated src/bindings.ts instead."
+            },
+            "patterns": [
+              {
+                "group": ["@codemirror/*", "@lezer/*"],
+                "message": "Only src/editor/ may use CodeMirror; go through src/editor/index.ts."
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["src/editor/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "@tauri-apps/api/core": "Call Rust through the generated src/bindings.ts instead."
+                },
+                "patterns": []
+              }
             }
           }
         }
       }
     }
-  }
+  ]
 }

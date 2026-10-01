@@ -14,13 +14,12 @@
   -webkit-text-size-adjust: 100%;
 }
 
-.container {
+html,
+body,
+#editor {
+  height: 100%;
   margin: 0;
-  padding-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  overflow: hidden;
 }
 
 @media (prefers-color-scheme: dark) {
