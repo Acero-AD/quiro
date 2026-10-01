@@ -54,10 +54,3 @@ Quiro SHALL provide a `ping` command that takes a request with a `message` and r
 - **WHEN** the frontend pings with a 257-character message
 - **THEN** the result is the error `{"kind":"tooLong","data":{"max":256}}`
 
-### Requirement: The window shows Rust's reply
-On start, the window SHALL show a minimal page titled "Quiro" that displays Rust's reply to pinging "hello". The starter greet form, logos and links SHALL be gone.
-
-#### Scenario: App start
-- **WHEN** Quiro starts
-- **THEN** the page shows "Quiro <version> replied: hello" and nothing from the Tauri starter
-
