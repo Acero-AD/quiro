@@ -1,8 +1,8 @@
-import { ping } from "./ping";
+import { createEditor } from "./editor";
 
-window.addEventListener("DOMContentLoaded", async () => {
-  const replyEl = document.querySelector("#ping-reply");
-  if (replyEl) {
-    replyEl.textContent = await ping("hello");
+window.addEventListener("DOMContentLoaded", () => {
+  const container = document.querySelector<HTMLElement>("#editor");
+  if (container) {
+    createEditor(container).focus();
   }
 });
