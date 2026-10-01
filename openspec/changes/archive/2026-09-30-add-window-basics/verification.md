@@ -82,3 +82,5 @@ Decided on 2026-10-01 for the fix change, `fix-add-window-basics-wayland`, not y
 3. **The clamp wording changes.** The spec clamps to "the monitor's work area, or the whole monitor where the platform doesn't report one (Wayland)".
 4. **One change** carries the upgrade, one `tasks.md` section for (2) with unit tests, and a spec delta for (2) and (3).
 5. **After it merges,** the floating and tiled restart checks run again, and their results are added here.
+
+**Result (2026-10-01): PASS.** The re-check on `master` at d5be0f4 passed every Linux item. See [`fix-add-window-basics-wayland`'s `verification.md`](../2026-10-01-fix-add-window-basics-wayland/verification.md).

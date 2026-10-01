@@ -1,6 +1,6 @@
 ## Why
 
-The Linux manual check of `add-window-basics` failed ([`verification.md`](../archive/2026-09-30-add-window-basics/verification.md)). The Tauri upgrade in its operator prerequisites was never applied. On the still-locked `tauri` 2.11.5 and `tao` 0.35.3, a floating window grows by GTK's shadow margins on every restart. A throwaway build on Tauri 2.12.1 fixed the growth but showed two more problems on Hyprland:
+The Linux manual check of `add-window-basics` failed ([`verification.md`](../2026-09-30-add-window-basics/verification.md)). The Tauri upgrade in its operator prerequisites was never applied. On the still-locked `tauri` 2.11.5 and `tao` 0.35.3, a floating window grows by GTK's shadow margins on every restart. A throwaway build on Tauri 2.12.1 fixed the growth but showed two more problems on Hyprland:
 - tao reports a window that was never maximized as maximized, so Quiro saves `maximized: true` and ignores every resize;
 - on Wayland, the size clamp can only use the whole monitor, not its work area.
 

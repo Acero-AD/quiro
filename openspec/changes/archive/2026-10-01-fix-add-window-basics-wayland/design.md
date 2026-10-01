@@ -1,6 +1,6 @@
 ## Context
 
-`add-window-basics` added window state for G-004: a pure core in `src-tauri/src/window_state.rs` (`load`, `save`, `is_wayland`, `plan_restore`), plus wiring in `src-tauri/src/lib.rs`. Its Linux manual check failed afterwards. Evidence is in [`verification.md`](../archive/2026-09-30-add-window-basics/verification.md), from a Hyprland 0.56.2 session on Omarchy.
+`add-window-basics` added window state for G-004: a pure core in `src-tauri/src/window_state.rs` (`load`, `save`, `is_wayland`, `plan_restore`), plus wiring in `src-tauri/src/lib.rs`. Its Linux manual check failed afterwards. Evidence is in [`verification.md`](../2026-09-30-add-window-basics/verification.md), from a Hyprland 0.56.2 session on Omarchy.
 
 - **The prerequisite upgrade to Tauri 2.12 never happened.** `Cargo.lock` still has `tauri` 2.11.5 and `tao` 0.35.3. There, the saved size includes GTK's client-side shadow margins, so a floating window grows by about 50 px on every restart. GTK's own title bar also lets the window outgrow the clamp.
 - **A throwaway build on 2.12.1** (`tao` 0.37.1, `wry` 0.57.0, `tauri-plugin-opener` 2.7.0) fixed both:
