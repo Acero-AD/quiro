@@ -1,4 +1,5 @@
 mod ipc;
+mod navigation_guard;
 mod window_state;
 
 use std::path::PathBuf;
@@ -30,6 +31,7 @@ fn monitor_work_area(monitor: &tauri::Monitor) -> MonitorInfo {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .plugin(navigation_guard::init())
         .invoke_handler(ipc::builder().invoke_handler())
         .setup(|app| {
             let window = app

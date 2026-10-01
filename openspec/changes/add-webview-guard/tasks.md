@@ -1,14 +1,14 @@
 ## 1. Navigation guard
 
-- [ ] 1.1 A new module in `src-tauri/src/` defines a pure `is_app_url(url: &tauri::Url, dev: bool) -> bool`. It compares the URL's scheme, host and port: when `dev` is true, it allows only `http://localhost:1420`; otherwise only `tauri://localhost` and `http://tauri.localhost`.
-- [ ] 1.2 The same module builds a Tauri plugin with `tauri::plugin::Builder` whose `on_navigation` handler returns `is_app_url(url, tauri::is_dev())`, and `src-tauri/src/lib.rs` registers it.
-- [ ] 1.3 `cargo test` covers `is_app_url` with a table of URLs:
+- [x] 1.1 A new module in `src-tauri/src/` defines a pure `is_app_url(url: &tauri::Url, dev: bool) -> bool`. It compares the URL's scheme, host and port: when `dev` is true, it allows only `http://localhost:1420`; otherwise only `tauri://localhost` and `http://tauri.localhost`.
+- [x] 1.2 The same module builds a Tauri plugin with `tauri::plugin::Builder` whose `on_navigation` handler returns `is_app_url(url, tauri::is_dev())`, and `src-tauri/src/lib.rs` registers it.
+- [x] 1.3 `cargo test` covers `is_app_url` with a table of URLs:
   - `http://localhost:1420/` and a path under it are allowed with `dev` true and refused with `dev` false;
   - `tauri://localhost/` and `http://tauri.localhost/` are allowed with `dev` false and refused with `dev` true;
   - `https://example.com/`, `http://localhost:1421/`, `https://tauri.localhost/`, a `file:///` URL and a `data:` URL are refused in both modes.
-- [ ] 1.4 The main window in `src-tauri/tauri.conf.json` sets `"zoomHotkeysEnabled": false` and `"dragDropEnabled": true`, and the file's other settings are unchanged.
-- [ ] 1.5 `src-tauri/Cargo.toml`, `src-tauri/Cargo.lock`, `package.json`, `package-lock.json` and `src/bindings.ts` are unchanged, and `tauri` doesn't enable the `devtools` feature.
-- [ ] 1.6 `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings` and `cargo test` pass in the gate.
+- [x] 1.4 The main window in `src-tauri/tauri.conf.json` sets `"zoomHotkeysEnabled": false` and `"dragDropEnabled": true`, and the file's other settings are unchanged.
+- [x] 1.5 `src-tauri/Cargo.toml`, `src-tauri/Cargo.lock`, `package.json`, `package-lock.json` and `src/bindings.ts` are unchanged, and `tauri` doesn't enable the `devtools` feature.
+- [x] 1.6 `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings` and `cargo test` pass in the gate.
 
 ## 2. Frontend guard
 
