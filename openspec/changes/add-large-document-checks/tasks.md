@@ -1,11 +1,11 @@
 ## 1. Generator and load budget
 
-- [ ] 1.1 A new module outside `src/editor/` exports `generateLargeDocument(seed: number): string` and a default seed constant. It uses a seeded PRNG, never `Math.random`, and imports nothing from `@codemirror/*` or `@lezer/*`.
-- [ ] 1.2 The generated text starts with front matter, and its sections use headings of several levels, prose with emphasis, strong, strikethrough, inline code and links, bullet and ordered lists, `- [ ]` and `- [x]` task items, `> ` quotes, fenced code blocks and tables.
-- [ ] 1.3 A jsdom test checks that the same seed gives identical text and that two different seeds give different text.
-- [ ] 1.4 A jsdom test checks that the default-seed text has exactly 50,000 lines, a length between 4,000,000 and 6,000,000 characters, and contains front matter at the start, an ATX heading, `**`, `~~`, a fenced code block, a table delimiter row, `- [ ]`, `- [x]` and `> `.
-- [ ] 1.5 A jsdom test generates the default-seed text first, then times one `load(text)` call on a new editor made with `createEditor`, and asserts that it took under 250 ms.
-- [ ] 1.6 No large Markdown file is added to the repository, earlier test files are unchanged, and `npm run lint`, `npm test` and `npm run build` pass in the gate.
+- [x] 1.1 A new module outside `src/editor/` exports `generateLargeDocument(seed: number): string` and a default seed constant. It uses a seeded PRNG, never `Math.random`, and imports nothing from `@codemirror/*` or `@lezer/*`.
+- [x] 1.2 The generated text starts with front matter, and its sections use headings of several levels, prose with emphasis, strong, strikethrough, inline code and links, bullet and ordered lists, `- [ ]` and `- [x]` task items, `> ` quotes, fenced code blocks and tables.
+- [x] 1.3 A jsdom test checks that the same seed gives identical text and that two different seeds give different text.
+- [x] 1.4 A jsdom test checks that the default-seed text has exactly 50,000 lines, a length between 4,000,000 and 6,000,000 characters, and contains front matter at the start, an ATX heading, `**`, `~~`, a fenced code block, a table delimiter row, `- [ ]`, `- [x]` and `> `.
+- [x] 1.5 A jsdom test generates the default-seed text first, then times one `load(text)` call on a new editor made with `createEditor`, and asserts that it took under 250 ms.
+- [x] 1.6 No large Markdown file is added to the repository, earlier test files are unchanged, and `npm run lint`, `npm test` and `npm run build` pass in the gate.
 
 ## 2. Timing probe and dev tools
 
