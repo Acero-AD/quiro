@@ -19,9 +19,11 @@ const editingKeymap = defaultKeymap.filter(
 
 // Editor styles live here, never in global CSS: CodeMirror's scoped base
 // theme wins over plain global rules.
-const layoutTheme = EditorView.theme({
+export const editorThemeSpec: Record<string, Record<string, string>> = {
   "&": { height: "100%" },
-});
+};
+
+const editorTheme = EditorView.theme(editorThemeSpec);
 
 export function editorExtensions(): Extension[] {
   return [
@@ -34,6 +36,6 @@ export function editorExtensions(): Extension[] {
       // CodeMirror binds Ctrl+Shift+Z to redo on Linux only.
       { win: "Ctrl-Shift-z", run: redo, preventDefault: true },
     ]),
-    layoutTheme,
+    editorTheme,
   ];
 }

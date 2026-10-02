@@ -230,6 +230,23 @@ A browser test checks two things:
 
 Vitest browser mode serves the `?raw` import through Vite, as in the app.
 
+### Pre-bundling the editor packages for the browser project
+
+At startup, Vite scans the browser project's test files for packages, pre-bundles them into `node_modules/.vite`, and reuses that cache for as long as the lockfile and config don't change.
+
+**What went wrong.** The prerequisites' `npm test` ran on the host before any browser test existed. So the cache it left listed none of the CodeMirror or Lezer packages. The gate works on a copy of `node_modules` that includes the cache, and nothing the gate writes comes back to the host. So every gate run of the first browser test reused that stale cache. Each run found the packages partway through, pre-bundled them, and reloaded the page, and the test file failed to load with "Failed to fetch dynamically imported module". The run hit this twice in a row.
+
+This was reproduced on 2026-10-02 by making the cache with the browser test excluded, then running it. From an empty cache, the test passed five times out of five without the setting.
+
+**The fix.** The browser project in `vitest.config.ts` sets `optimizeDeps.include` to the eight packages Vite reported:
+- `@codemirror/commands`, `@codemirror/lang-markdown`, `@codemirror/lang-yaml`, `@codemirror/language`, `@codemirror/state` and `@codemirror/view`;
+- `@lezer/highlight` and `@lezer/markdown`.
+
+Those packages are then pre-bundled at startup whether or not the scan finds them. Changing the setting also changes the cache's hash, which throws away a stale cache. With the setting, all 163 tests passed.
+- The jsdom project runs in Node without Vite's pre-bundling, so it's left alone.
+- Task 2 makes the edit, because it adds the first browser test.
+- If a later change's browser tests import a package that isn't on the list, that change adds it. Vitest's "Vite unexpectedly reloaded a test" warning is the sign.
+
 ### `window.quiroDev`: loaded only in dev
 
 - **`src/dev-tools.ts`** (outside `src/editor/`) exports `installDevTools(): void`, which sets `window.quiroDev = { checkLayout }`, and declares the `Window.quiroDev` type with `declare global`.
@@ -240,6 +257,7 @@ The production-bundle test is a `.test.ts` in the jsdom project that switches to
 - It calls Vite's `build()` with `build: { write: false }` and `logLevel: "silent"`, which loads `vite.config.ts` and returns the output in memory.
 - It asserts that no chunk's code and no asset's source contains `quiroDev`.
 - It uses no `node:` imports, because `tsc` checks every file under `src/` and the repo has no `@types/node`.
+- It sets `NODE_ENV` to `production` with `vi.stubEnv` for the build. Vitest sets `NODE_ENV` to `test`, and Vite keeps a `NODE_ENV` that's already set, so without the stub the build keeps `import.meta.env.DEV` true and emits the dev tools chunk. `npm run build` leaves `NODE_ENV` unset, and Vite then builds for production.
 - It's written to last: the dev tools added later hang off the same name.
 
 ### README
