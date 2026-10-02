@@ -1,7 +1,14 @@
 import { EditorView } from "@codemirror/view";
 import { newState } from "./state";
+import { rememberView } from "./typing-probe";
 
 export { checkLayout, type LayoutViolation } from "./layout-check";
+export {
+  startTypingProbe,
+  summarizeSamples,
+  type TypingProbe,
+  type TypingStats,
+} from "./typing-probe";
 
 export interface Editor {
   load(fileText: string): void;
@@ -13,7 +20,7 @@ export interface Editor {
 export function createEditor(parent: HTMLElement): Editor {
   const view = new EditorView({ state: newState(""), parent });
 
-  return {
+  const editor: Editor = {
     load(fileText) {
       const doc = fileText.startsWith("﻿") ? fileText.slice(1) : fileText;
       // A new state is the only way to clear CodeMirror's undo history.
@@ -29,4 +36,6 @@ export function createEditor(parent: HTMLElement): Editor {
       view.destroy();
     },
   };
+  rememberView(editor, view);
+  return editor;
 }
