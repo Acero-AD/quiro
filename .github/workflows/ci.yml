@@ -42,6 +42,18 @@ jobs:
 
       - run: npm ci
 
+      - name: Install Playwright's Chromium (Linux)
+        if: runner.os == 'Linux'
+        run: npx playwright install --with-deps chromium-headless-shell
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: "0"
+
+      - name: Install Playwright's Chromium (Windows)
+        if: runner.os == 'Windows'
+        run: npx playwright install chromium-headless-shell
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: "0"
+
       - run: npm run lint
       - run: npm test
       - run: npm run build
