@@ -1,11 +1,11 @@
 ## 1. Wrapping and one line height
 
-- [ ] 1.1 A new internal layout theme in `src/editor/` adds `EditorView.lineWrapping` and an `EditorView.theme`. The theme declares `--editor-font-size: 16px` and `--editor-line-height: 1.6` on the editor root, and sets `.cm-scroller`'s `font-size` to `var(--editor-font-size)` and its `line-height` to `var(--editor-line-height)`. `src/editor/index.ts` adds it to the editor's extensions.
-- [ ] 1.2 The layout theme is the only Quiro theme spec that sets `font-size` or `line-height`, and it doesn't set `font-family`.
-- [ ] 1.3 A jsdom test checks that an editor made with `createEditor` has `cm-lineWrapping` on its content element.
-- [ ] 1.4 A jsdom test reads the Markdown theme spec exported by `add-markdown-mode` and the layout theme. It checks, in camelCase and kebab-case, that no rule targeting an `md-*` class sets `font-size`, `line-height`, `vertical-align`, `padding`, `margin`, `border`, or any `-top`, `-bottom`, `-block`, `-block-start` or `-block-end` form of padding, margin or border.
-- [ ] 1.5 A jsdom test checks that the layout theme's `font-size` and `line-height` values are `var(--editor-font-size)` and `var(--editor-line-height)`, and that no other Quiro theme spec sets either property.
-- [ ] 1.6 `src/editor/fixtures/dialect.md`, `src/editor/fixtures/dialect.tree.txt` and every test file from earlier changes are unchanged, and `npm run lint`, `npm test` and `npm run build` pass in the gate.
+- [x] 1.1 A new internal layout theme in `src/editor/` adds `EditorView.lineWrapping` and an `EditorView.theme`. The theme declares `--editor-font-size: 16px` and `--editor-line-height: 1.6` on the editor root, and sets `.cm-scroller`'s `font-size` to `var(--editor-font-size)` and its `line-height` to `var(--editor-line-height)`. `src/editor/index.ts` adds it to the editor's extensions.
+- [x] 1.2 The layout theme is the only Quiro theme spec that sets `font-size` or `line-height`, and it doesn't set `font-family`.
+- [x] 1.3 A jsdom test checks that an editor made with `createEditor` has `cm-lineWrapping` on its content element.
+- [x] 1.4 A jsdom test reads the Markdown theme spec exported by `add-markdown-mode` and the layout theme. It checks, in camelCase and kebab-case, that no rule targeting an `md-*` class sets `font-size`, `line-height`, `vertical-align`, `padding`, `margin`, `border`, or any `-top`, `-bottom`, `-block`, `-block-start` or `-block-end` form of padding, margin or border.
+- [x] 1.5 A jsdom test checks that the layout theme's `font-size` and `line-height` values are `var(--editor-font-size)` and `var(--editor-line-height)`, and that no other Quiro theme spec sets either property.
+- [x] 1.6 `src/editor/fixtures/dialect.md`, `src/editor/fixtures/dialect.tree.txt` and every test file from earlier changes are unchanged, and `npm run lint`, `npm test` and `npm run build` pass in the gate.
 
 ## 2. The layout check
 

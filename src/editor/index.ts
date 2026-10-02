@@ -4,6 +4,7 @@ import { blockLines } from "./blocks";
 import { editorExtensions } from "./extensions";
 import { markdownHighlighting } from "./highlighting";
 import { markdownMode } from "./language";
+import { softWrapLayout } from "./layout";
 import { markdownTheme } from "./theme";
 
 export interface Editor {
@@ -22,6 +23,7 @@ function newState(doc: string): EditorState {
       markdownHighlighting(),
       blockLines,
       markdownTheme,
+      softWrapLayout(),
     ],
   });
 }
