@@ -257,6 +257,7 @@ The production-bundle test is a `.test.ts` in the jsdom project that switches to
 - It calls Vite's `build()` with `build: { write: false }` and `logLevel: "silent"`, which loads `vite.config.ts` and returns the output in memory.
 - It asserts that no chunk's code and no asset's source contains `quiroDev`.
 - It uses no `node:` imports, because `tsc` checks every file under `src/` and the repo has no `@types/node`.
+- It sets `NODE_ENV` to `production` with `vi.stubEnv` for the build. Vitest sets `NODE_ENV` to `test`, and Vite keeps a `NODE_ENV` that's already set, so without the stub the build keeps `import.meta.env.DEV` true and emits the dev tools chunk. `npm run build` leaves `NODE_ENV` unset, and Vite then builds for production.
 - It's written to last: the dev tools added later hang off the same name.
 
 ### README

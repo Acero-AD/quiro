@@ -41,9 +41,15 @@ src-tauri/             Rust backend and Tauri config
 
 ```sh
 npm ci               # install the locked dependencies (includes the Tauri CLI)
+PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium-headless-shell
 npm run tauri dev    # run the app with hot reload
 npm run tauri build  # produce a release build and installers
 ```
+
+The second line downloads the headless Chromium that `npm test` runs the
+browser tests in. It goes inside `node_modules`, so `npm ci` deletes it: run
+the line again after every `npm ci`. On Debian and Ubuntu, adding `--with-deps`
+also installs the system libraries Chromium needs, as CI does.
 
 ### Checks
 
@@ -52,7 +58,7 @@ Every check must pass before a change is accepted.
 ```sh
 # Frontend, from the repository root
 npm run lint     # Biome lint and format check; never writes files
-npm test         # Vitest unit tests under jsdom
+npm test         # Vitest: unit tests under jsdom, *.browser.test.ts in headless Chromium
 npm run build    # type-check with tsc, then bundle with Vite
 
 # Rust, from src-tauri/
