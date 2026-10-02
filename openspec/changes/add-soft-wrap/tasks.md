@@ -19,7 +19,8 @@
 - [ ] 2.6 `checkLayout` reports a `jitter` violation when inserting `# ` at the start of a plain line, inserting `**x**` inside another line, or moving the cursor across lines changes the height of any drawn line.
 - [ ] 2.7 `checkLayout` destroys the hidden editor and removes its container in a `finally` block, and never reads or changes any other editor.
 - [ ] 2.8 A new `src/editor/*.browser.test.ts` checks that `checkLayout()` resolves to `[]`. With a temporary global `<style>` setting `.md-heading-1 { font-size: 2em !important }`, it checks that `checkLayout()` reports at least one `line-height` violation, then removes the style.
-- [ ] 2.9 Earlier test files and the fixture files are unchanged, and `npm run lint`, `npm test` (both projects) and `npm run build` pass in the gate.
+- [ ] 2.9 In `vitest.config.ts`, the browser project, and only that project, sets `optimizeDeps.include` to `@codemirror/commands`, `@codemirror/lang-markdown`, `@codemirror/lang-yaml`, `@codemirror/language`, `@codemirror/state`, `@codemirror/view`, `@lezer/highlight` and `@lezer/markdown`. The rest of the file is unchanged.
+- [ ] 2.10 Earlier test files and the fixture files are unchanged, and `npm run lint`, `npm test` (both projects) and `npm run build` pass in the gate.
 
 ## 3. Dev tools and the production bundle
 
