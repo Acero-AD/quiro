@@ -20,6 +20,20 @@ export default defineConfig({
         },
       },
       {
+        // Pre-bundled at startup, so Vite never reloads the page mid-test
+        // when its dependency scan misses them or its cache is stale.
+        optimizeDeps: {
+          include: [
+            "@codemirror/commands",
+            "@codemirror/lang-markdown",
+            "@codemirror/lang-yaml",
+            "@codemirror/language",
+            "@codemirror/state",
+            "@codemirror/view",
+            "@lezer/highlight",
+            "@lezer/markdown",
+          ],
+        },
         test: {
           name: "browser",
           include: ["src/**/*.browser.test.ts"],
