@@ -4,7 +4,7 @@
 - `src/editor/theme.ts` (`add-markdown-mode`) declares one set of `--md-*` defaults on the editor root, chosen for the light page;
 - no theme marks the editor as dark, so CodeMirror's base theme stays on its `&light` rules. Its cursor is `1.2px solid black` and its focused selection is `#d7d4f0` (`@codemirror/view` 6.43.13, `dist/index.js`, lines 6904 to 6937).
 
-The `add-markdown-mode` Linux check found this: the dialect fixture pasted into a dark dev build has headings, links, tables and quotes that are hard to read. Contrast ratios against `#2f2f2f`, by the WCAG 2 formula:
+The `add-markdown-mode` Linux check found this ([`verification.md`](../2026-10-06-add-markdown-mode/verification.md), findings 1 and 2): the dialect fixture pasted into a dark dev build has headings, links, tables and quotes that are hard to read. The check itself passed, because it only asks that constructs look distinct. Contrast ratios against `#2f2f2f`, by the WCAG 2 formula:
 
 | Colour | Ratio |
 | --- | --- |
@@ -119,7 +119,6 @@ Run these after this change's PR is merged, on `master`, in `npm run tauri dev`.
 - **Fixture:** paste `src/editor/fixtures/dialect.md`. Every construct is easy to read, each looks distinct from body text and from the others, and syntax markers are dimmer than body text.
 - **Cursor:** the cursor is clearly visible, and blinks.
 - **Selection:** a selected word sits on a visibly blue background and stays readable, both with the window focused and after focusing another window.
-- **Re-run `add-markdown-mode`'s item** and record it in `add-markdown-mode`'s own `verification.md`.
 
 **Linux, switching while running:**
 - With some text typed, switch Omarchy to a light theme. Quiro turns light without a restart, keeps the text and selection, and Ctrl+Z still undoes the typing. Then switch back to dark.

@@ -1,6 +1,6 @@
 ## Why
 
-Run with the system in dark mode, the `add-markdown-mode` Linux check shows Markdown that's hard to read. `src/styles.css` switches the page to a `#2f2f2f` background under `prefers-color-scheme: dark`, but the editor doesn't know the page is dark:
+Run with the system in dark mode, the `add-markdown-mode` Linux check ([`verification.md`](../2026-10-06-add-markdown-mode/verification.md)) passed, but showed Markdown that's hard to read. `src/styles.css` switches the page to a `#2f2f2f` background under `prefers-color-scheme: dark`, but the editor doesn't know the page is dark:
 - the `--md-*` colours were chosen for the light background. Against `#2f2f2f`, headings are 1.6:1, links 2.3:1 and list markers 2.7:1, and tables and quotes are about as faint;
 - CodeMirror stays on its light base theme, so the cursor is black (1.6:1) and the focused selection is a light lavender under near-white text (1.3:1).
 
@@ -30,5 +30,5 @@ None. `markdown-highlighting`'s requirements (CSS-variable colours, body-size he
 - **Operator prerequisites:** none. No new dependencies, and the gate commands don't change.
 - **Code:** a new internal file in `src/editor/` for the scheme and the dark theme spec. `src/editor/state.ts` adds the scheme to every state, and `src/editor/index.ts` follows the system scheme. The editor interface doesn't change. `src/editor/theme.ts` and `src/styles.css` don't change.
 - **Tests:** new jsdom tests with a stubbed `matchMedia`, a contrast test, and one test in the Chromium browser project. Existing test files are untouched.
-- **Run order:** before `add-markdown-mode` is archived. After this change merges, the `add-markdown-mode` Linux item runs again, in dark mode. Its result goes into `add-markdown-mode`'s `verification.md`, and then both changes are archived.
+- **Run order:** no constraint. It builds on `add-editor` and `add-markdown-mode`, which are both archived.
 - **Manual check:** Linux items in dark and light mode, and a live switch. Windows items go to [Manual Windows check](https://github.com/Acero-AD/quiro/issues/22) when this change is archived.
