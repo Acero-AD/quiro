@@ -15,14 +15,14 @@
 
 ## 2. The editor follows the system scheme
 
-- [ ] 2.1 `createEditor` calls `window.matchMedia("(prefers-color-scheme: dark)")` once and creates its first state with `"dark"` when the query matches, and `"light"` otherwise. When `window.matchMedia` isn't a function, it uses `"light"` and doesn't throw.
-- [ ] 2.2 `createEditor` listens with `addEventListener("change", …)` on the query list. On a change, it dispatches the reconfigure effect from `colour-scheme.ts` as a transaction, and doesn't call `setState`.
-- [ ] 2.3 `load` passes the current scheme to `newState`. `destroy` removes the `change` listener before destroying the view.
-- [ ] 2.4 `createEditor`'s signature, the exported `Editor` type and the exports of `src/editor/index.ts` are unchanged.
-- [ ] 2.5 New jsdom tests install a fake `MediaQueryList` with `vi.stubGlobal("matchMedia", …)`, whose `matches` and `change` events the test controls, and remove it afterwards. Each test reaches the view with `EditorView.findFromDOM` and reads `EditorView.darkTheme` from its state. They check that:
+- [x] 2.1 `createEditor` calls `window.matchMedia("(prefers-color-scheme: dark)")` once and creates its first state with `"dark"` when the query matches, and `"light"` otherwise. When `window.matchMedia` isn't a function, it uses `"light"` and doesn't throw.
+- [x] 2.2 `createEditor` listens with `addEventListener("change", …)` on the query list. On a change, it dispatches the reconfigure effect from `colour-scheme.ts` as a transaction, and doesn't call `setState`.
+- [x] 2.3 `load` passes the current scheme to `newState`. `destroy` removes the `change` listener before destroying the view.
+- [x] 2.4 `createEditor`'s signature, the exported `Editor` type and the exports of `src/editor/index.ts` are unchanged.
+- [x] 2.5 New jsdom tests install a fake `MediaQueryList` with `vi.stubGlobal("matchMedia", …)`, whose `matches` and `change` events the test controls, and remove it afterwards. Each test reaches the view with `EditorView.findFromDOM` and reads `EditorView.darkTheme` from its state. They check that:
   - with `matchMedia` absent, `createEditor` doesn't throw and the editor is light;
   - when the query matches at creation, the editor is dark;
   - after edits dispatched to the view and a non-empty selection, a `change` to dark and back to light flips `EditorView.darkTheme` each time, and leaves the text, the selection and `undoDepth` (from `@codemirror/commands`) unchanged;
   - an editor that's dark stays dark after `load`;
   - after `destroy`, the fake query list has no `change` listener left.
-- [ ] 2.6 No test file that existed before this change is modified, including section 1's. `npm run lint`, `npm test` and `npm run build` pass in the gate.
+- [x] 2.6 No test file that existed before this change is modified, including section 1's. `npm run lint`, `npm test` and `npm run build` pass in the gate.
