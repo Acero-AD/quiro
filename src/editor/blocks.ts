@@ -27,8 +27,9 @@ function buildBlocks(view: EditorView): DecorationSet {
       enter(node) {
         const decoration = blockClasses[node.name];
         if (!decoration) return;
-        // Front matter ends after its closing line break; that next line
-        // isn't part of the block.
+        // A block that ends right at the start of a line, after a line
+        // break, doesn't include that line. Front matter and fenced code end
+        // at the end of their last line, so this doesn't happen today.
         let last = doc.lineAt(node.to);
         if (last.from === node.to && node.to > node.from) {
           last = doc.line(last.number - 1);

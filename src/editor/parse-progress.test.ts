@@ -1,32 +1,23 @@
-import { ensureSyntaxTree, syntaxTreeAvailable } from "@codemirror/language";
 import { describe, expect, it } from "vitest";
 import {
   DEFAULT_LARGE_DOCUMENT_SEED,
   generateLargeDocument,
 } from "../large-document";
-import { newState } from "./state";
+import { markdownMode } from "./language";
 
 describe("background parsing", () => {
-  // Slices are a fraction of one full parse on the same machine, so the round
-  // count doesn't depend on its speed. If a document change discards the
-  // parse's progress, the tree never gets past the first slices.
-  it("keeps its progress when a keystroke follows every slice", () => {
+  // CodeMirror keeps a running parse's work up to the position the parser
+  // reports. A nested parse reports 0 until its outer pass ends, so a
+  // keystroke would discard everything parsed since the last finished parse.
+  it("reports its progress as it parses", () => {
     const doc = generateLargeDocument(DEFAULT_LARGE_DOCUMENT_SEED);
+    const parse = markdownMode().language.parser.startParse(doc);
 
-    const full = newState(doc);
-    const start = performance.now();
-    ensureSyntaxTree(full, full.doc.length, 1e9);
-    const fullParseMs = performance.now() - start;
+    for (let step = 0; step < 1000; step++) parse.advance();
+    const first = parse.parsedPos;
+    expect(first).toBeGreaterThan(0);
 
-    let state = newState(doc);
-    for (let round = 0; round < 100; round++) {
-      ensureSyntaxTree(state, state.doc.length, fullParseMs / 5);
-      if (syntaxTreeAvailable(state, state.doc.length)) break;
-      state = state.update({
-        changes: { from: state.doc.length, insert: "x" },
-      }).state;
-    }
-
-    expect(syntaxTreeAvailable(state, state.doc.length)).toBe(true);
-  }, 60_000);
+    for (let step = 0; step < 1000; step++) parse.advance();
+    expect(parse.parsedPos).toBeGreaterThan(first);
+  });
 });
