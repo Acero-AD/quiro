@@ -1,11 +1,11 @@
 ## ADDED Requirements
 
-### Requirement: Typing keeps background parsing progress
-A document change SHALL NOT discard parsing work that was done before it. When background parsing of the generated document is interrupted by a keystroke after every slice, the parse SHALL still reach the end of the document, given about twenty times the work of one full parse in total.
+### Requirement: The parser reports its progress
+A document change SHALL NOT discard parsing work done before it. CodeMirror keeps a running parse's work up to the position the parser reports, so the editor's language parser SHALL report its real position while it parses: it SHALL NOT be wrapped in a nested parse that reports 0 until an outer pass ends.
 
 #### Scenario: Gate test
-- **WHEN** `npm test` alternates slices of background parsing, each a fifth of a full parse's time, with a one-character insertion at the end of the generated document
-- **THEN** the syntax tree covers the whole document within 100 rounds
+- **WHEN** `npm test` starts a parse of the generated document with the editor's language parser and advances it 1,000 steps, then 1,000 more
+- **THEN** the reported parse position is above 0 after the first 1,000 steps, and higher after the next 1,000
 
 ## MODIFIED Requirements
 

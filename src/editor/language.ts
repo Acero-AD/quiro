@@ -1,23 +1,27 @@
-import { commonmarkLanguage, markdown } from "@codemirror/lang-markdown";
-import { yamlFrontmatter } from "@codemirror/lang-yaml";
-import type { LanguageSupport } from "@codemirror/language";
-import { GFM } from "@lezer/markdown";
+import { commonmarkLanguage } from "@codemirror/lang-markdown";
+import { Language, LanguageSupport } from "@codemirror/language";
+import { GFM, type MarkdownParser } from "@lezer/markdown";
+import { frontMatter } from "./front-matter";
 import { quiroMarkdownTags } from "./highlighting";
 
 // CommonMark plus exactly the GitHub extensions, not markdownLanguage, which
 // also brings subscript, superscript and emoji. No codeLanguages: fenced code
-// stays one block until G-307. The keymap, tag completion and paste-as-link
-// are off so the language adds no editing behaviour.
-// The front-matter Document wraps the Markdown Document, so tree walkers see
-// two Document nodes.
+// stays one block until G-307. The language adds no editing behaviour.
+// The whole document is one Markdown parse, front matter included, with no
+// nested parse: a nested parse reports position 0 until its outer pass ends,
+// so every keystroke would discard the background parsing progress. That's
+// why neither markdown() nor yamlFrontmatter is used.
 export function markdownMode(): LanguageSupport {
-  return yamlFrontmatter({
-    content: markdown({
-      base: commonmarkLanguage,
-      extensions: [GFM, quiroMarkdownTags],
-      addKeymap: false,
-      completeHTMLTags: false,
-      pasteURLAsLink: false,
-    }),
-  });
+  return new LanguageSupport(
+    new Language(
+      commonmarkLanguage.data,
+      (commonmarkLanguage.parser as MarkdownParser).configure([
+        GFM,
+        quiroMarkdownTags,
+        frontMatter,
+      ]),
+      [],
+      "markdown",
+    ),
+  );
 }
