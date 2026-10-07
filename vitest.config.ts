@@ -17,6 +17,9 @@ export default defineConfig({
           environment: "jsdom",
           include: ["src/**/*.test.ts"],
           exclude: ["src/**/*.browser.test.ts"],
+          // Vitest empties CSS imports, `?raw` ones included, unless they're
+          // processed. The dark palette's contrast test reads the page colours.
+          css: { include: [/src\/styles\.css/] },
         },
       },
       {
