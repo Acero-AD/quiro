@@ -64,7 +64,7 @@ Once the whole generated document is parsed, re-parsing after a one-character ch
 
 #### Scenario: Gate test
 - **WHEN** `npm test` fully parses the generated document in an editor state, inserts one character at its end, and completes the parse again
-- **THEN** the new tree contains the old tree's first top-level chunk as the same object
+- **THEN** at least 90% of the old tree's balanced chunks are in the new tree as the same objects
 
 ### Requirement: The incremental tree matches a fresh parse
 After any sequence of edits, the syntax tree that the editor maintains incrementally SHALL contain the same nodes, with the same names and ranges, as a fresh parse of the same text.
@@ -72,4 +72,11 @@ After any sequence of edits, the syntax tree that the editor maintains increment
 #### Scenario: Seeded edits
 - **WHEN** `npm test` applies a seeded sequence of insertions and deletions to a document made of copies of the dialect fixture, completing the parse after each edit
 - **THEN** after every edit, the tree's node listing equals the listing of a fresh parse
+
+### Requirement: Writing in one place keeps the tree shallow
+When content is added repeatedly at the same place in a document, at its start, in the middle or at its end, the syntax tree that the editor maintains incrementally SHALL stay about as deep as a fresh parse of the same text. Reusing parts of the previous tree SHALL NOT add a level for every few edits.
+
+#### Scenario: Gate test
+- **WHEN** `npm test` adds 300 paragraphs one at a time to an empty editor state, at the start, in the middle or at the end, completing the parse after each
+- **THEN** in each case the tree is at most 5 levels deeper than a fresh parse of the final text
 

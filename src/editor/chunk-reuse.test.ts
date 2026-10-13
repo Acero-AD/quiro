@@ -14,33 +14,38 @@ function parseAll(state: EditorState): Tree {
   return tree;
 }
 
-// Walks the top-level blocks and the anonymous chunks that group them,
-// without entering the blocks themselves.
-function reaches(tree: Tree, chunk: Tree): boolean {
+// The anonymous chunks that balancing groups blocks into, found by walking
+// the tree without entering any named node.
+function chunks(tree: Tree): Tree[] {
+  const found: Tree[] = [];
   const cursor = tree.cursor(IterMode.IncludeAnonymous);
-  if (!cursor.firstChild()) return false;
+  if (!cursor.firstChild()) return found;
+  let anonymous: boolean;
   do {
-    if (cursor.tree === chunk) return true;
-  } while (cursor.next(cursor.type.isAnonymous && cursor.tree !== null));
-  return false;
+    anonymous = cursor.type.isAnonymous;
+    if (anonymous && cursor.tree) found.push(cursor.tree);
+  } while (cursor.next(anonymous));
+  return found;
 }
 
 describe("incremental parsing of a complete tree", () => {
   // Needs the patched @lezer/markdown: as released, its reuse cursor skips
   // anonymous chunks and re-adds every top-level block on each keystroke.
-  it("reuses the unchanged first chunk as the same object", () => {
+  it("reuses most unchanged chunks as the same objects", () => {
     const state = newState(generateLargeDocument(DEFAULT_LARGE_DOCUMENT_SEED));
     const tree = parseAll(state);
-
-    const cursor = tree.cursor(IterMode.IncludeAnonymous);
-    expect(cursor.firstChild()).toBe(true);
-    expect(cursor.type.isAnonymous).toBe(true);
-    const chunk = cursor.tree;
-    expect(chunk).not.toBeNull();
+    const before = chunks(tree);
+    expect(before.length).toBeGreaterThanOrEqual(100);
 
     const next = state.update({
       changes: { from: state.doc.length, insert: "x" },
     }).state;
-    expect(reaches(parseAll(next), chunk as Tree)).toBe(true);
+    // A new tree, so reuse isn't trivially the old tree itself.
+    const nextTree = parseAll(next);
+    expect(nextTree).not.toBe(tree);
+    expect(nextTree.length).toBe(tree.length + 1);
+    const after = new Set(chunks(nextTree));
+    const reused = before.filter((chunk) => after.has(chunk)).length;
+    expect(reused).toBeGreaterThanOrEqual(0.9 * before.length);
   }, 120_000);
 });
