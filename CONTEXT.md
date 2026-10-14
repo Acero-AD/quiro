@@ -44,6 +44,10 @@ _Avoid_: revision, generation, change count
 The text between two line breaks in the document, as it is stored on disk. The cursor line is the line that contains the cursor.
 _Avoid_: paragraph (when meaning a line), logical line, row
 
+**Line ending**:
+The line break a document's file uses: LF, CRLF or CR. A document has one line ending, and saving writes it after every line. A file with **mixed line endings** uses more than one; saving gives it the one it uses most.
+_Avoid_: EOL, newline (when meaning the sequence), line terminator
+
 **Visual line**:
 One row of text as it appears on screen. A line longer than the editor's width wraps into several visual lines, and every visual line has the same height.
 _Avoid_: display line, wrapped line, screen line, line (when meaning a visual line)
