@@ -33,7 +33,7 @@ A document that has no file: the one Quiro starts with when it is given no file,
 _Avoid_: new document, unsaved document, scratch
 
 **Modified**:
-Said of a document whose text differs from its file's contents as last opened or saved. Undoing back to the saved text makes it unmodified again. An **untitled document** is modified when it isn't empty.
+Said of a document whose text differs from the text it had when last opened or saved, ignoring its **line ending** and BOM. Undoing back to that text makes it unmodified again. An **untitled document** is modified when it isn't empty.
 _Avoid_: dirty, unsaved, changed
 
 **Outside change**:
