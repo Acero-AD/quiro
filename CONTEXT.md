@@ -36,6 +36,10 @@ _Avoid_: new document, unsaved document, scratch
 Said of a document whose text differs from its file's contents as last opened or saved. Undoing back to the saved text makes it unmodified again. An **untitled document** is modified when it isn't empty.
 _Avoid_: dirty, unsaved, changed
 
+**Outside change**:
+A change to a document's file made by anything other than Quiro since Quiro last read or wrote it.
+_Avoid_: external change, disk change
+
 **Document version**:
 A number that identifies one state of a document. Every change and every load gives the document a new version, and a version is never reused while Quiro runs.
 _Avoid_: revision, generation, change count
