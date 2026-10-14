@@ -25,11 +25,15 @@ The Markdown text being edited in a window. A window holds one document at a tim
 _Avoid_: buffer, content, text (when meaning the whole document)
 
 **File**:
-A document's copy on disk. A new document has no file until it is saved.
+A document's copy on disk. An **untitled document** has no file until it is saved.
 _Avoid_: document (when meaning what is on disk)
 
+**Untitled document**:
+A document that has no file: the one Quiro starts with when it is given no file, or one created with New. Save As gives it a file.
+_Avoid_: new document, unsaved document, scratch
+
 **Modified**:
-Said of a document whose text differs from its file's contents as last opened or saved. Undoing back to the saved text makes it unmodified again.
+Said of a document whose text differs from its file's contents as last opened or saved. Undoing back to the saved text makes it unmodified again. An **untitled document** is modified when it isn't empty.
 _Avoid_: dirty, unsaved, changed
 
 **Document version**:
