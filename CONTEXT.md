@@ -40,6 +40,10 @@ _Avoid_: dirty, unsaved, changed
 A change to a document's file made by anything other than Quiro since Quiro last read or wrote it.
 _Avoid_: external change, disk change
 
+**Recovery copy**:
+A copy of a **modified** document's text that Quiro keeps outside the document's file, so that the text survives if the session ends before the user has chosen whether to save it.
+_Avoid_: backup, emergency save, autosave, hot exit, swap file
+
 **Document version**:
 A number that identifies one state of a document. Every change and every load gives the document a new version, and a version is never reused while Quiro runs.
 _Avoid_: revision, generation, change count
