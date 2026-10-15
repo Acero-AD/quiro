@@ -73,3 +73,15 @@ _Avoid_: window settings, window preferences, **Setting**
 **Setting**:
 A user-chosen preference that changes Quiro's behaviour or appearance.
 _Avoid_: preference, option, config (when meaning one choice)
+
+**Notice**:
+A message Quiro shows while the document stays editable, sometimes with actions to choose from. Several notices can show at once.
+_Avoid_: banner, toast, alert
+
+**Prompt**:
+A question Quiro asks that must be answered before anything else can be done in the window, such as Save / Discard / Cancel. A file chooser is not a prompt.
+_Avoid_: dialog (when meaning a question), modal, confirm
+
+**Recent list**:
+The files Quiro remembers having worked on lately, kept between runs, so that one can be reopened. Like **Window state**, it is remembered by Quiro, not chosen by the user.
+_Avoid_: history, recent files, MRU
