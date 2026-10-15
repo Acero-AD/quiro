@@ -9,6 +9,6 @@ We chose this over Tauri's `plugin-fs` and `plugin-dialog` JavaScript APIs, and 
 - The frontend uses neither `plugin-fs` nor the dialog plugin's file pickers. File choosers run from Rust.
 - **Rust is the source of truth for which file is open.** When the webview starts, including after a reload, it asks Rust what to show, rather than telling Rust.
 - **Every open goes through a single pending open in Rust,** which the webview commits or abandons. Paths from the command line, a second launch and the Recent list all arrive this way.
-- **Text crosses IPC only on open, save and reload,** as a string, and Rust checks that it is UTF-8.
+- **Text crosses IPC only on open, save and reload, and at a close request on a modified document,** as a string, and Rust checks that it is UTF-8. The close request's text is written to a **recovery copy**, because a session that ends under the prompt takes the webview with it. Like every other crossing, it carries text and never a path. *(Amended by [What happens when a modified document is closed or replaced?](https://github.com/Acero-AD/quiro/issues/43).)*
 - **New ways to choose a file are added in Rust,** such as drag and drop or a plugin that opens files. They never pass a path from the webview.
 - **Every file transition lives in one Rust module:** opening, saving, Save As and New. That module is where later plugins hook in.
